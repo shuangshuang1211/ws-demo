@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div>
+    <input type="text" id="text"/>
+    <br />
+    <button id="btn">Send</button>
+    <br />
+    <div id="content"></div>
+  </div>
+  <script>
+    const websocket = new WebSocket('ws://127.0.0.1:5007')
+    console.log('websocket', websocket)
+    websocket.onopen = () => {
+      console.log('==>', websocket.readyState)
+    }
+    const divNode = document.getElementById('btn')
+    // divNode.onclick = function() {
+    //   const inputNode = document.getElementById('text')
+    //   websocket.send('xxx')
+    // }
+    divNode.addEventListener('click', () => {
+      const inputNode = document.getElementById('text')
+      websocket.send(inputNode.value)
+    })
+
+    websocket.onmessage = (data) => {
+      console.log('rescive', data)
+      const contentDiv = document.getElementById('content')
+      contentDiv.innerHTML += `<p>${data.data}</p>`
+    }
+  </script>
+</body>
+</html>
